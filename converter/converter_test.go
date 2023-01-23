@@ -60,3 +60,26 @@ func TestPointerToUint_Zero(t *testing.T) {
 	y := PointerToUint(nil)
 	assert.Equal(t, uint(0), y)
 }
+
+func TestFloat64ToPointer(t *testing.T) {
+	f := 1.23334567
+	y := Float64ToPointer(f)
+	assert.NotNil(t, y)
+}
+
+func TestPointerToFloat64(t *testing.T) {
+	f := 1.23334567
+	y := PointerToFloat64(&f)
+	assert.Equal(t, f, y)
+}
+
+func TestPointerToFloat64_Nil(t *testing.T) {
+	y := PointerToFloat64(nil)
+	assert.Equal(t, float64(0), y)
+}
+
+func TestFloat64ToString(t *testing.T) {
+	f := 1.2
+	g := Float64ToString(f)
+	assert.Equal(t, "1.2", g)
+}
