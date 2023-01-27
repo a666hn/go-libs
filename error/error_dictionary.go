@@ -16,7 +16,7 @@ var errorDictionaries = &ErrorDictionaries{
 	httpCode:  make(map[ErrorCode]int),
 }
 
-func RegisterErrorDictionaries(
+func NewErrorDictionariesInstance(
 	errorCode map[ErrorCode]*CommonError,
 	httpCode map[ErrorCode]int,
 ) *ErrorDictionaries {
