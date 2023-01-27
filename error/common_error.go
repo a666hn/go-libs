@@ -19,7 +19,11 @@ type CommonError struct {
 }
 
 func (ce *CommonError) Error() string {
-	return fmt.Sprintf("CommonError: %v. Trace: %v", *ce.ErrorMessage, *ce.ErrorTrace)
+	return fmt.Sprintf(
+		"CommonError: %v. Trace: %v",
+		converter.PointerToString(ce.ErrorMessage),
+		converter.PointerToString(ce.ErrorTrace),
+	)
 }
 
 func (ce *CommonError) SetClientMessage(msg string) {
