@@ -54,15 +54,6 @@ func SetHttpLogger(logger *logrus.Logger) func(o *httpServer) {
 	}
 }
 
-func setHttpHandlerFn(handler http.Handler) func(o *httpServer) {
-	return func(o *httpServer) {
-		srv := &http.Server{
-			Handler: handler,
-		}
-		o.iHttpServer = srv
-	}
-}
-
 func NewInstanceHttpServer(
 	handlerFn http.Handler,
 	opts ...httpServerOptions,
@@ -72,16 +63,20 @@ func NewInstanceHttpServer(
 	hs.Addr = ":8080"                     // Set default port as 8080
 	hs.Logger = logrus.StandardLogger()   // Set Logrus standard logger as default log
 
+	// Set HTTP Handler
+	srv := &http.Server{
+		Handler: handlerFn,
+	}
+	hs.iHttpServer = srv
+
 	for _, opt := range opts {
 		opt(hs)
 	}
 
-	if handlerFn == nil {
+	if hs.iHttpServer == nil {
 		hs.Logger.Fatalf("http_server: Fatal! HTTP handler cannot be blank")
 		os.Exit(1)
 	}
-
-	setHttpHandlerFn(handlerFn)
 
 	return hs
 }
