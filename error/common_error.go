@@ -52,13 +52,11 @@ func NewCommonError(
 	errCode ErrorCode,
 	err error,
 ) *CommonError {
-	var (
-		message        *string
-		trace          *string
-		clientMessage              = "Unhandled error."
-		serviceMessage interface{} = "An unhandled error has occured. Please contact the developer."
-		commonError                = errorDictionaries.errorCodes[errCode]
-	)
+	var message *string
+	var trace *string
+	var clientMessage = "Unhandled error."
+	var serviceMessage interface{} = "An unhandled error has occured. Please contact the developer."
+	var commonError = errorDictionaries.errorCodes[errCode]
 
 	if err != nil {
 		s := err.Error()
