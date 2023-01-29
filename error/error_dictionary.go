@@ -6,14 +6,14 @@ type ErrorCode uint
 
 const UNKNOWN_ERROR ErrorCode = 0
 
+var errorDictionaries *ErrorDictionaries = &ErrorDictionaries{
+	errorCodes: make(map[ErrorCode]*CommonError),
+	httpCodes:  make(map[ErrorCode]int),
+}
+
 type ErrorDictionaries struct {
 	errorCodes map[ErrorCode]*CommonError
 	httpCodes  map[ErrorCode]int
-}
-
-var errorDictionaries = &ErrorDictionaries{
-	errorCodes: make(map[ErrorCode]*CommonError),
-	httpCodes:  make(map[ErrorCode]int),
 }
 
 func NewErrorDictionariesInstance(
