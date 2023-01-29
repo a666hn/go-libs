@@ -49,7 +49,7 @@ func (ce *CommonError) buildOzzoValidationMessage(dtoError validation.Errors) Oz
 }
 
 func NewCommonError(
-	errorCode ErrorCode,
+	errCode ErrorCode,
 	err error,
 ) *CommonError {
 	var (
@@ -57,7 +57,7 @@ func NewCommonError(
 		trace          *string
 		clientMessage              = "Unhandled error."
 		serviceMessage interface{} = "An unhandled error has occured. Please contact the developer."
-		commonError                = errorDictionaries.errorCode[errorCode]
+		commonError                = errorDictionaries.errorCodes[errCode]
 	)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func NewCommonError(
 			ClientMessage:         clientMessage,
 			ServiceMessage:        serviceMessage,
 			OzzoValidationMessage: nil,
-			ErrorCode:             errorCode,
+			ErrorCode:             errCode,
 			ErrorMessage:          message,
 			ErrorTrace:            trace,
 		}
@@ -87,7 +87,7 @@ func NewCommonError(
 		ClientMessage:         commonError.ClientMessage,
 		ServiceMessage:        commonError.ServiceMessage,
 		OzzoValidationMessage: commonError.OzzoValidationMessage,
-		ErrorCode:             errorCode,
+		ErrorCode:             errCode,
 		ErrorMessage:          message,
 		ErrorTrace:            trace,
 	}

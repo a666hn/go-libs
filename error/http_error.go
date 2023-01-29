@@ -16,10 +16,10 @@ func (h *HTTPError) Error() string {
 }
 
 func (err *CommonError) GetHttpStatus() int {
-	if errorDictionaries.httpCode[err.ErrorCode] == 0 {
+	if errorDictionaries.httpCodes[err.ErrorCode] == 0 {
 		return http.StatusInternalServerError
 	}
-	return errorDictionaries.httpCode[err.ErrorCode]
+	return errorDictionaries.httpCodes[err.ErrorCode]
 }
 
 func (err *CommonError) ToHttpError() HTTPError {

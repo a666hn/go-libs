@@ -7,13 +7,13 @@ type ErrorCode uint
 const UNKNOWN_ERROR ErrorCode = 0
 
 type ErrorDictionaries struct {
-	errorCode map[ErrorCode]*CommonError
-	httpCode  map[ErrorCode]int
+	errorCodes map[ErrorCode]*CommonError
+	httpCodes  map[ErrorCode]int
 }
 
 var errorDictionaries = &ErrorDictionaries{
-	errorCode: make(map[ErrorCode]*CommonError),
-	httpCode:  make(map[ErrorCode]int),
+	errorCodes: make(map[ErrorCode]*CommonError),
+	httpCodes:  make(map[ErrorCode]int),
 }
 
 func NewErrorDictionariesInstance(
@@ -21,18 +21,18 @@ func NewErrorDictionariesInstance(
 	httpCode map[ErrorCode]int,
 ) *ErrorDictionaries {
 	errorDicts := &ErrorDictionaries{
-		errorCode: errorCode,
-		httpCode:  httpCode,
+		errorCodes: errorCode,
+		httpCodes:  httpCode,
 	}
 
-	errorDicts.errorCode[UNKNOWN_ERROR] = &CommonError{
+	errorDicts.errorCodes[UNKNOWN_ERROR] = &CommonError{
 		ClientMessage:         "Unhandled error.",
 		ServiceMessage:        "An unhandled error has occured. Please contact the developer.",
 		OzzoValidationMessage: nil,
 		ErrorCode:             UNKNOWN_ERROR,
 	}
 
-	errorDicts.httpCode[UNKNOWN_ERROR] = http.StatusInternalServerError
+	errorDicts.httpCodes[UNKNOWN_ERROR] = http.StatusInternalServerError
 
 	return errorDicts
 }
