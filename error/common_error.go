@@ -56,13 +56,13 @@ func NewCommonError(
 	var trace *string
 	var clientMessage = "Unhandled error."
 	var serviceMessage interface{} = "An unhandled error has occured. Please contact the developer."
-	var commonError = errorDictionaries.errorCodes[errCode]
+	var commonError = eDicts.errorCodes[errCode]
 
 	if err != nil {
 		s := err.Error()
 		message = converter.StringToPointer(s)
 
-		ss := fmt.Sprintf("%+v", err)
+		ss := fmt.Sprintf("%v", err)
 		trace = converter.StringToPointer(ss)
 	}
 
