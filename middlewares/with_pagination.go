@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -42,13 +43,17 @@ func (w *OrderDirection) String() string {
 }
 
 // BuildOrderDirectionFromString create order direction from one of value [asc,desc]
-func BuildOrderDirectionFromString(drc string) (*OrderDirection, error) {
+func BuildOrderDirectionFromString(
+	drc string,
+	dir interface{},
+) error {
 	dc := strings.ToUpper(drc)
 	if d, ok := mapStringDirection[dc]; ok {
-		return d.Pointer(), nil
+		dir = d.Pointer()
+		return nil
 	}
 
-	return nil, errors.New("invalid value of order direction, should one of \"asc\" or \"desc\"")
+	return errors.New("invalid value of order direction, should one of \"asc\" or \"desc\"")
 }
 
 // =======================================
@@ -105,7 +110,7 @@ const (
 type ContextPagination struct {
 	Page           int
 	PerPage        int
-	OrderDirection OrderDirection
+	OrderDirection *OrderDirection
 	OrderKey       string
 	Keyword        string
 }
@@ -118,6 +123,7 @@ func WithPagination(pagination *MiddlewarePagination) func(next http.Handler) ht
 		) {
 			var initPage = 1
 			var initPerPage = 5
+			var direction OrderDirection
 
 			min := pagination.MinPageLoad()
 			max := pagination.MaxPageLoad()
@@ -143,12 +149,25 @@ func WithPagination(pagination *MiddlewarePagination) func(next http.Handler) ht
 				}
 			}
 
-			direction, _ := BuildOrderDirectionFromString(sd)
+			if sd != "" {
+				if err := BuildOrderDirectionFromString(sd, &direction); err != nil {
+					mesErr := map[string]interface{}{
+						"message": "Invalid value",
+						"error":   err.Error(),
+					}
+					m, _ := json.Marshal(mesErr)
+
+					w.Header().Set("Content-Type", "application/json")
+					w.WriteHeader(500)
+					_, _ = w.Write(m)
+					return
+				}
+			}
 
 			contextVal := ContextPagination{
 				Page:           initPage,
 				PerPage:        initPerPage,
-				OrderDirection: direction.Index(),
+				OrderDirection: &direction,
 				OrderKey:       st,
 				Keyword:        k,
 			}
