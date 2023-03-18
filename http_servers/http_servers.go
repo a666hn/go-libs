@@ -106,8 +106,7 @@ func (hs *httpServer) Start(quit chan os.Signal) {
 		}
 	}()
 
-	hn, _ := os.Hostname()
-	hs.Logger.Infof("API service running on: %s%s", hn, hs.Addr)
+	hs.Logger.Infof("API service running on: %s", hs.Addr)
 
 	hs.gracefullShutdown(quit)
 }
