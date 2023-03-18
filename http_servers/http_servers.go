@@ -44,7 +44,7 @@ func SetHttpContext(ctx context.Context) func(o *httpServer) {
 
 func SetHttpAddress(port string) func(o *httpServer) {
 	return func(o *httpServer) {
-		o.Addr = fmt.Sprintf(":%s", port)
+		o.Addr = fmt.Sprintf("0.0.0.0:%s", port)
 	}
 }
 
@@ -60,7 +60,7 @@ func NewInstanceHttpServer(
 ) IHTTPInstanceServer {
 	hs := &httpServer{}
 	hs.HttpContext = context.Background() // Set as default context
-	hs.Addr = ":8080"                     // Set default port as 8080
+	hs.Addr = "0.0.0.0:8080"              // Set default port as 8080
 	hs.Logger = logrus.StandardLogger()   // Set Logrus standard logger as default log
 
 	// Set HTTP Handler
